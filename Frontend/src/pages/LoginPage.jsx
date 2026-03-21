@@ -3,6 +3,7 @@ import {motion} from 'framer-motion';
 import {Link} from 'react-router-dom';
 import {LogIn, Mail, Lock, ArrowRight, Loader} from 'lucide-react';
 import InputField from '../Components/InputField.jsx';
+import {useUserStore} from '../stores/useUserStore.js';
 
 const LoginPage = () => {
     // states
@@ -10,12 +11,14 @@ const LoginPage = () => {
         email : "",
         password : ""
     });
-    const loading = false;
 
+    const {login, loading} = useUserStore();  // loading will come from actual store
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(formData.email, formData.password);
+        login(formData);
     }
+    
     return (
         <div className = 'flex flex-col justify-center py-12 sm:px-6 lg:px-8'> {/*sm : px-6 means that it will be 6px on small screens and lg: px-8 means that it will be 8px on large screens */}
             <motion.div 

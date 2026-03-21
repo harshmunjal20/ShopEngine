@@ -1,10 +1,24 @@
 import HomePage from './pages/HomePage.jsx';
 import SignUpPage from './pages/SignUpPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
-import {Routes, Route} from 'react-router-dom';
+import AdminPage from './pages/AdminPage.jsx';
+
+import {Navigate, Routes, Route} from 'react-router-dom';
 import NavBar from './Components/NavBar.jsx';
+import {Toaster} from 'react-hot-toast';
+import {useUserStore} from './stores/useUserStore.js';
+import {useEffect} from 'react'; // used to handle side effects (things outside rendering) like api calls, event listeners, timers, dom-manipulation
+import LoadingSpinner from './Components/LoadingSpinner.jsx';
 
 function App() {
+  const {user, checkAuth, checkingAuth} = useUserStore(); // in signup and login we set the user in the useUserStore()
+  // now as soon as the user visits our application , we would like to run that function under the useeffect
+
+  useEffect(() => {
+    checkAuth()
+  },[checkAuth]);
+
+  if (checkingAuth) return <LoadingSpinner/>;
   return (
     <div className='min-h-screen bg-gray-900 text-white relative overflow-hidden'>  {/* minHeight would be the height of the screen */}
       {/* Background gradient */}
@@ -18,10 +32,12 @@ function App() {
         <NavBar/>
         <Routes>
           <Route path = "/" element = {<HomePage/>}/>
-          <Route path = "/signup" element = {<SignUpPage/>} />
-          <Route path = "/login" element = {<LoginPage/>} />
+          <Route path = "/signup" element = {!user ? <SignUpPage/> : <Navigate to='/'/>} />
+          <Route path = "/login" element = {!user ? <LoginPage/> : <Navigate to='/'/>} /> {/*Navigate is the better approach as we would be using react library <Navigate to='/'/> rather than <HomePage/> */}
+          <Route path = '/secret-dashboard' element = {user?.role==='admin' ? <AdminPage/> : <Navigate to='/login'/>} />
         </Routes>
       </div>
+      <Toaster/>
     </div>
   );
 };

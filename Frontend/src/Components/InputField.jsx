@@ -1,4 +1,4 @@
-// components/InputField.jsx
+// components/InputField.jsx => component data is also called state
 const InputField = ({
   label,
   id,
