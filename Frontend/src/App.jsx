@@ -2,6 +2,7 @@ import HomePage from './pages/HomePage.jsx';
 import SignUpPage from './pages/SignUpPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import AdminPage from './pages/AdminPage.jsx';
+import CategoryPage from './pages/CategoryPage.jsx';
 
 import {Navigate, Routes, Route} from 'react-router-dom';
 import NavBar from './Components/NavBar.jsx';
@@ -35,6 +36,8 @@ function App() {
           <Route path = "/signup" element = {!user ? <SignUpPage/> : <Navigate to='/'/>} />
           <Route path = "/login" element = {!user ? <LoginPage/> : <Navigate to='/'/>} /> {/*Navigate is the better approach as we would be using react library <Navigate to='/'/> rather than <HomePage/> */}
           <Route path = '/secret-dashboard' element = {user?.role==='admin' ? <AdminPage/> : <Navigate to='/login'/>} />
+          {/* : category means dynamic value , => jackets, glasses, shoes*/}
+          <Route path ='/category/:category' element = {<CategoryPage/>}/>
         </Routes>
       </div>
       <Toaster/>

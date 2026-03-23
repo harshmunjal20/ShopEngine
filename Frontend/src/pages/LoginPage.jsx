@@ -18,7 +18,7 @@ const LoginPage = () => {
         console.log(formData.email, formData.password);
         login(formData);
     }
-    
+
     return (
         <div className = 'flex flex-col justify-center py-12 sm:px-6 lg:px-8'> {/*sm : px-6 means that it will be 6px on small screens and lg: px-8 means that it will be 8px on large screens */}
             <motion.div 
@@ -27,7 +27,7 @@ const LoginPage = () => {
             animate = {{opacity : 1, y : 0}}
             transition = {{duration : 0.8}}> {/* opacity : 0 => nothing visible and y : -20 means it will start from top and delay : 0.2 means that it will start after 0.2 seconds*/}
                 
-                <h2 className = 'mt-6 text-center text-3xl font-extrabold text-emerald-400'>Create Your Account</h2> {/* mt means margin top and 3xl means it will be 3 times the size of normal text */}
+                <h2 className = 'mt-6 text-center text-3xl font-extrabold text-emerald-400'>Login With Your Account</h2> {/* mt means margin top and 3xl means it will be 3 times the size of normal text */}
 
 
             </motion.div>

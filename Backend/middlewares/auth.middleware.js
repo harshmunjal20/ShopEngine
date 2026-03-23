@@ -5,7 +5,7 @@ export const protectRoute = async (req, res, next) => {
     // next(); // will call next middleware ie, adminRoute for the product.route
     try {
         const accessToken = req.cookies.accessToken;
-
+        console.log()
         if (!accessToken) {
             return res.status(401).json({message : "Unauthorized : no access token provided"});
         }

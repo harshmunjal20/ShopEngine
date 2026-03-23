@@ -9,11 +9,11 @@ export const getCartProducts = async (req, res) => {
             const item = req.user.cartItems.find(cartItem => cartItem.id === product.id);
             return {...product.toJSON(), quantity : item.quantity};
         }) // why is this done
-        res.json(cartItems);
+        return res.json(cartItems);
     }   
     catch (error) {
         console.log("Error in getCartProductsController", error.message);
-        res.json(500).json({message : "Server error", error : error.message});
+        return res.json(500).json({message : "Server error", error : error.message});
     }
 }
 export const addToCart = async (req, res) => {
