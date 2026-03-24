@@ -12,7 +12,6 @@ const ProductCard = ({product}) => {
    }
    const {user} = useUserStore();
 
-   console.log("I am running");
    return (
       <div className='flex w-full relative flex-col overflow-hidden rounded-lg border border-gray-700 shadow-lg'>
 
