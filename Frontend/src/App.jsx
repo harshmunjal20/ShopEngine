@@ -3,6 +3,7 @@ import SignUpPage from './pages/SignUpPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import AdminPage from './pages/AdminPage.jsx';
 import CategoryPage from './pages/CategoryPage.jsx';
+import CartPage from './pages/CartPage.jsx';
 
 import {Navigate, Routes, Route} from 'react-router-dom';
 import NavBar from './Components/NavBar.jsx';
@@ -12,12 +13,16 @@ import {useEffect} from 'react'; // used to handle side effects (things outside 
 import LoadingSpinner from './Components/LoadingSpinner.jsx';
 
 function App() {
-  const {user, checkAuth, checkingAuth} = useUserStore(); // in signup and login we set the user in the useUserStore()
+  const {user, checkAuth, checkingAuth, getCartItems} = useUserStore(); // in signup and login we set the user in the useUserStore()
   // now as soon as the user visits our application , we would like to run that function under the useeffect
 
   useEffect(() => {
     checkAuth()
   },[checkAuth]);
+
+  useEffect(() => {
+    getCartItems();
+  },[getCartItems]);
 
   if (checkingAuth) return <LoadingSpinner/>;
   return (
@@ -38,6 +43,7 @@ function App() {
           <Route path = '/secret-dashboard' element = {user?.role==='admin' ? <AdminPage/> : <Navigate to='/login'/>} />
           {/* : category means dynamic value , => jackets, glasses, shoes*/}
           <Route path ='/category/:category' element = {<CategoryPage/>}/>
+          <Route path = '/cart' element = {user ? <CartPage/> : <Navigate to = '/login'/>}/>
         </Routes>
       </div>
       <Toaster/>

@@ -1,16 +1,22 @@
 import toast from 'react-hot-toast';
 import {ShoppingCart} from 'lucide-react';
 import {useUserStore} from '../stores/useUserStore.js';
+import { useCartStore } from '../stores/useCartStore.js';
 
 const ProductCard = ({product}) => {
+   const {addToCart} = useCartStore();
+   const {user} = useUserStore();
+
    const handleAddToCart = () => {
       if (!user) {
          toast.error("Please login to add products to cart", {id : "login"}); // to stop user from keep spamming the add to cart we used the {id : 'login'} => configuration object to control toast behaviour => uses "login" as a unique id
          return;
       }
-      toast.success("Added to cart");
+      else {
+         addToCart(product);
+         toast.success("Added to cart");
+      }
    }
-   const {user} = useUserStore();
 
    return (
       <div className='flex w-full relative flex-col overflow-hidden rounded-lg border border-gray-700 shadow-lg'>
@@ -28,7 +34,7 @@ const ProductCard = ({product}) => {
                </p>
             </div>
             {/* button to be able to add to cart*/}
-            <button className='flex items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-emerald-700 focus:outline=none focus:ring-4 focus:ring-emerald-300 '
+            <button className='flex items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300 '
             onClick={handleAddToCart}>
                <ShoppingCart size={22} className='mr-2'/>
                Add to cart
