@@ -9,24 +9,24 @@ export const getCartProducts = async (req, res) => {
             const item = req.user.cartItems.find(cartItem => cartItem.id === product.id);
             return {...product.toJSON(), quantity : item.quantity};
         }) // why is this done
-        return res.json(cartItems);
+        res.json(cartItems);
     }   
     catch (error) {
         console.log("Error in getCartProductsController", error.message);
-        return res.json(500).json({message : "Server error", error : error.message});
+        res.json(500).json({message : "Server error", error : error.message});
     }
 }
 export const addToCart = async (req, res) => {
+
     try {
         // user will send the product id
         const {productId} = req.body;
         const user = req.user; // as it was protected route , hence protected request will have user
-
-        const existingItem = user.cartItems.find(item => item.id === productId); // item in function is used in this manner because cartItems is an array
-
+        const existingItem = user.cartItems.find((item) => item.id === productId); // item in function is used in this manner because cartItems is an array
         if (existingItem) {
             existingItem.quantity += 1;
         }
+
         else {
             user.cartItems.push(productId);
         }
@@ -39,8 +39,6 @@ export const addToCart = async (req, res) => {
         res.status(500).json({message : "Server error", error : error.message});
     }
 }
-
-// 6 : 01 start
 
 export const removeAllFromCart = async (req, res) => {
     try {
@@ -74,7 +72,7 @@ export const updateQuantity = async (req, res) => {
                 // that means we can filter out from the cart
                 user.cartItems = user.cartItems.filter((item) => item.id !== productId);
                 await user.save();
-                return res.json(user.cartItems);
+                res.json(user.cartItems);
             }
 
             existingItem.quantity = quantity;

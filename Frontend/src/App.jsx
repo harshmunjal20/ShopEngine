@@ -4,16 +4,20 @@ import LoginPage from './pages/LoginPage.jsx';
 import AdminPage from './pages/AdminPage.jsx';
 import CategoryPage from './pages/CategoryPage.jsx';
 import CartPage from './pages/CartPage.jsx';
+import PurchaseSuccessPage from './pages/PurchaseSuccessPage.jsx';
+import PurchaseCancelPage from './pages/PurchaseCancelPage.jsx';
 
 import {Navigate, Routes, Route} from 'react-router-dom';
 import NavBar from './Components/NavBar.jsx';
 import {Toaster} from 'react-hot-toast';
 import {useUserStore} from './stores/useUserStore.js';
+import {useCartStore} from './stores/useCartStore.js';
 import {useEffect} from 'react'; // used to handle side effects (things outside rendering) like api calls, event listeners, timers, dom-manipulation
 import LoadingSpinner from './Components/LoadingSpinner.jsx';
 
 function App() {
-  const {user, checkAuth, checkingAuth, getCartItems} = useUserStore(); // in signup and login we set the user in the useUserStore()
+  const {user, checkAuth, checkingAuth} = useUserStore(); // in signup and login we set the user in the 
+  const {getCartItems} = useCartStore();
   // now as soon as the user visits our application , we would like to run that function under the useeffect
 
   useEffect(() => {
@@ -21,8 +25,9 @@ function App() {
   },[checkAuth]);
 
   useEffect(() => {
+    if (!user) return;
     getCartItems();
-  },[getCartItems]);
+  },[getCartItems, user]); // meaning of second argument is that when the user changes we should run this function
 
   if (checkingAuth) return <LoadingSpinner/>;
   return (
@@ -44,6 +49,8 @@ function App() {
           {/* : category means dynamic value , => jackets, glasses, shoes*/}
           <Route path ='/category/:category' element = {<CategoryPage/>}/>
           <Route path = '/cart' element = {user ? <CartPage/> : <Navigate to = '/login'/>}/>
+          <Route path = '/purchase-success' element = {user ? <PurchaseSuccessPage/> : <Navigate to = '/login'/>}/>
+          <Route path = '/purchase-cancel' element = {user ? <PurchaseCancelPage/> : <Navigate to = '/login'/> } />
         </Routes>
       </div>
       <Toaster/>

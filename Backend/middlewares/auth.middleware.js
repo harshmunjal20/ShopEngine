@@ -5,7 +5,7 @@ export const protectRoute = async (req, res, next) => {
     // next(); // will call next middleware ie, adminRoute for the product.route
     try {
         const accessToken = req.cookies.accessToken;
-        console.log()
+
         if (!accessToken) {
             return res.status(401).json({message : "Unauthorized : no access token provided"});
         }
@@ -14,7 +14,7 @@ export const protectRoute = async (req, res, next) => {
 
         try {
             const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET); //this will check that was it signed using this key and then returns the decoded payload
-            const user = await User.findById(decoded.userId).select('-Password'); // means de select password from the user document => not going to get the password from the user
+            const user = await User.findById(decoded.userId).select('-password'); // means de select password from the user document => not going to get the password from the user
 
             if (!user) {
                 return res.status(401).json({message : "Unauthorized : user not found"});
@@ -36,7 +36,7 @@ export const protectRoute = async (req, res, next) => {
         console.log("Error in protectedRoute middleware", error.message);
         return res.status(401).json({message : "Unauthorized : invalid access token"});
     }
-} // will check that the user is authenticated by taking a look at accessToken
+}; // will check that the user is authenticated by taking a look at accessToken
 
 export const adminRoute = (req, res, next) => {
     if (req.user && req.user.role === 'admin') {

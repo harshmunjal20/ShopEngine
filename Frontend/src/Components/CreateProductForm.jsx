@@ -145,7 +145,7 @@ const createProductForm = () => {
                )
                   : (
                      <>
-                        <PlusCircle clasName='mr-2 h-5 w-5'/>
+                        <PlusCircle className='mr-2 h-5 w-5'/>
                         Create Product
                      </>
                   )

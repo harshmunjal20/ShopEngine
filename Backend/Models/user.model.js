@@ -44,18 +44,20 @@ const userSchema = new mongoose.Schema({
 
 // john 123456 => #aagbsh*jk => Hash
 // pre save hook =>  
-userSchema.pre('save', async function (next) { // next means in simple  
-    if (!this.isModified("password")) return next();
+userSchema.pre('save', async function () { 
+    // If password isn't modified, just return. 
+    // Mongoose sees the resolved promise and moves on.
+    if (!this.isModified("password")) return;
 
     try {
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);
-    }
-    catch (error) {
-        next(error); // 
+        // No next() needed here!
+    } catch (error) {
+        // If an error happens, throwing it will stop the save process
+        throw error; 
     }
 });
-
 userSchema.methods.comparePassword = async function (password) { //
     return bcrypt.compare(password, this.password);
 }
