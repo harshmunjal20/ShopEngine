@@ -6,16 +6,20 @@ const GiftCouponCard = () => {
    const [userInputCode, setUserInputCode] = useState("");
    const {coupon, isCouponApplied, removeCoupon, applyCoupon, getMyCoupon} = useCartStore();
 
+   const [success, setSuccess] = useState(false);
+
    useEffect(() => {
       getMyCoupon();
    },[getMyCoupon]);
 
    useEffect(() => {
-      if (coupon) setUserInputCode(coupon.code);
-   },[coupon]); // useeffect for setting the code
+      if (coupon && isCouponApplied) setUserInputCode(coupon.code);
+   },[coupon, isCouponApplied]); // useeffect for setting the code
 
    const handleApplyCoupon = async () => {
-      if (!userInputCode) return;
+      if (!userInputCode || isCouponApplied) return;
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
       await applyCoupon(userInputCode);
    }
 
@@ -49,17 +53,17 @@ const GiftCouponCard = () => {
                />
             </div>
 
-            <motion.button 
-               type='button'
-               className='flex w-full items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 
-               text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300'
-               whileHover={{scale : 1.05}}
-               whileTap={{scale : 0.95}}
-               onClick = {handleApplyCoupon}
+            <motion.button
+            type="button"
+            onClick={handleApplyCoupon}
+            animate={success ? { scale: [1, 1.1, 1] } : {}}
+            className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-white
+            ${success ? "bg-green-500 shadow-lg shadow-green-500/50" : "bg-emerald-600 hover:bg-emerald-700"}`}
             >
-               Apply Code
+               {success ? "Coupon Applied 🎉" : "Apply Code"}
             </motion.button>
          </div>
+         
          {isCouponApplied && coupon && (
             <div className='mt-4'>
                <h3 className='text-lg font-medium text-gray-300'>

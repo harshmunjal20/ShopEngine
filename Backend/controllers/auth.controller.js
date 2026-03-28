@@ -1,6 +1,7 @@
 import {redis} from '../lib/redis.js';
 import User from '../Models/user.model.js';
 import jwt from 'jsonwebtoken';
+import Coupon from '../Models/coupon.model.js';
 
 const generateTokens = (userId) => {
     const accessToken = jwt.sign({userId}, process.env.ACCESS_TOKEN_SECRET, {expiresIn : '15m'});
@@ -49,7 +50,23 @@ export const signup = async (req, res) => {
         // authentication
         const {accessToken, refreshToken} = generateTokens(user._id);
         await storeRefreshToken(user._id, refreshToken);
-        // also store them in cookies so that client can send them in subsequent requests
+        let coupon = await Coupon.findOne({
+            userId : user._id,
+            isActive : true,
+            expirationDate : {$gt : Date.now()}
+        })
+
+        if (!coupon) {
+            const newCoupon = new Coupon({
+                code : "GIFT" + Math.random().toString(36).substring(3,8).toUpperCase(),
+                discountPercentage : 40,
+                userId : user._id,
+                expirationDate : Date.now() + 30 * 24 * 60 * 60 * 1000
+            });
+
+            await newCoupon.save();
+        }
+        // also store refresh token in cookies so that client can send them in subsequent requests
         setCookies(res, accessToken, refreshToken);//
         res.status(201).json({
             _id : user._id,

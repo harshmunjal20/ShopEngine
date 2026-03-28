@@ -4,7 +4,7 @@ import {toast} from 'react-hot-toast';
 const API = import.meta.env.VITE_API_URL;
 
 // it will have states initially and then setters function
-export const useProductStore = create((set) => ({
+export const useProductStore = create((set, get) => ({
    products : [], // states
    loading : false ,
    setProducts : (products) => set({products}),
@@ -39,6 +39,18 @@ export const useProductStore = create((set) => ({
       catch (error) {
          set({error : "Falied to fetch Products", loading : false});
          toast.error(error.response.data.message || "Failed to fetch products");
+      }
+   },
+
+   fetchFeaturedProducts : async () => {
+      set({loading : true});
+      try {
+         const response = await axios.get(`${API}/api/products/featured`);
+         set({products : response.data.products, loading : false});
+      }
+      catch (error) {
+         set({error : "failed to fetch products", loading : false});
+         console.log("Error fetching featured products : ", error);
       }
    },
 

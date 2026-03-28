@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import path from 'path'; // 
 
 import authRoutes from './routes/auth.route.js';
 import productRoutes from './routes/product.route.js';
@@ -21,6 +22,7 @@ app.use(cors({
 }));
 
 const PORT = process.env.PORT || 5000;
+const __dirName = path.resolve(); // dirname is going to be the root directory
 
 app.use(cookieParser()); // imp. use it before routes => so that we can access cookies in routes
 app.use("/api/auth", authRoutes);
@@ -29,6 +31,14 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/analytics', analyticsRoutes);
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirName, "/frontend/dist"))); // dist => distribution folder => It contains the final optimised version of your app that is ready to be deployed, dist is the folder that users actually download in their browser
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirName, "frontend", "dist", "index.html"));
+    }); // for any request that that doesn't match an API Route, send index.html
+}
 
 app.listen(PORT ,() => {
     console.log(`Server is running on http://localhost:${PORT}`);

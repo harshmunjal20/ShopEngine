@@ -57,7 +57,7 @@ export const useCartStore = create((set, get) => ({
    },
    // remove the coupon , delete the cart, reset the total amount
    clearCart : async () => {
-      set({cart : [], total : 0, subtotal : 0, coupon : null})
+      set({cart : [], total : 0, subtotal : 0, coupon : null, isCouponApplied : false})
    },
 
    updateQuantity : async (productId, quantity) => {
@@ -99,7 +99,7 @@ export const useCartStore = create((set, get) => ({
       const subTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);// sum is accumulator and 0 is used to set sum = 0 initially
       let total = subTotal;
 
-      if (coupon) {
+      if (coupon && get().isCouponApplied) {
          const discount = Math.round(total * (coupon.discountPercentage / 100));
          total -= discount;
       }

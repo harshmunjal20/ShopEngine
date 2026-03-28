@@ -32,12 +32,13 @@ export const createCheckoutSession = async (req, res) => {
         let coupon = null;
 
         if (couponCode) {
-            coupon = await Coupon.findOne({code : couponCode, userId : req.user._id, isActive : true}); // finding in database
+            coupon = await Coupon.findOne({code : couponCode, userId : req.user.id, isActive : true}); // finding in database
             if (coupon) {
                 totalAmount -= Math.round(totalAmount * (coupon.discountPercentage) / 100);
             }
         }
 
+        if (coupon) console.log(totalAmount);
         // now we can create a session
         const session = await stripe.checkout.sessions.create({
             payment_method_types : ['card','amazon_pay'],
@@ -86,7 +87,7 @@ async function createStripeCoupon(discountPercentage) {
 
 // storing coupon in mongo database
 async function createNewCoupon(userId) {
-    await  Coupon.findOneAndDelete({ userId });
+    await Coupon.findOneAndDelete({ userId });
 
     const newCoupon = new Coupon({
         code:"GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),  // toString(36) means it will be in base 36 => (0 to 9, a to z), substring(2,8) removes the 0. part
