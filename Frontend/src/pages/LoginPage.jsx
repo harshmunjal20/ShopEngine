@@ -4,6 +4,8 @@ import {Link} from 'react-router-dom';
 import {LogIn, Mail, Lock, ArrowRight, Loader} from 'lucide-react';
 import InputField from '../Components/InputField.jsx';
 import {useUserStore} from '../stores/useUserStore.js';
+import GoogleSignIn from "../Components/GoogleSignIn";
+
 
 const LoginPage = () => {
     // states
@@ -87,7 +89,20 @@ const LoginPage = () => {
                             )}
                         </button>
                     </form>
+                    
+                    <div className="mt-6">
+                    {/* Divider */}
+                        <div className="flex items-center">
+                            <div className="flex-grow border-t border-gray-600" />
+                            <span className="mx-4 text-gray-400 text-sm">OR</span>
+                            <div className="flex-grow border-t border-gray-600" />
+                        </div>
 
+                        {/* Google Sign In */}
+                        <div className="mt-6 flex justify-center">
+                            <GoogleSignIn />
+                        </div>
+                    </div>
                     {/*now putting the already have an account ? login now section */}
                     <p className='mt-8 text-center text-sm text-gray-400'>
                         Not a member?   {""}

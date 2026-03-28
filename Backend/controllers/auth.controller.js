@@ -2,6 +2,9 @@ import {redis} from '../lib/redis.js';
 import User from '../Models/user.model.js';
 import jwt from 'jsonwebtoken';
 import Coupon from '../Models/coupon.model.js';
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const generateTokens = (userId) => {
     const accessToken = jwt.sign({userId}, process.env.ACCESS_TOKEN_SECRET, {expiresIn : '15m'});
@@ -98,7 +101,7 @@ export const login = async (req, res) => {
             })
         }
         else {
-            res.status(400).json({message : "Invalid email or password"}); // we changed it to 400 because it was conflicting with the interceptors
+            res.status(400).json({message : "Invalid email or password"}); // we changed it to 400 because it was conflicting with the interceptors => login status code updated
         }
     }
     catch (error) {
@@ -167,3 +170,75 @@ export const getProfile = async (req, res) => {
         res.status(500).json({message : "Server error", error : error.message});
     }
 }
+
+export const googleAuthController = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    // 1 Verify token with Google
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    // 2 Get user data from Google
+    const payload = ticket.getPayload();
+
+    const {
+      email,
+      name,
+      picture,
+      sub: googleId
+    } = payload;
+
+    // 3 Check if user already exists
+    let user = await User.findOne({ email });
+
+    // 4 If not → create new user
+    if (!user) {
+      user = await User.create({
+        name,
+        email,
+        image: picture,
+        googleId,        // store google id
+        password: null   // no password needed
+      });
+    }
+
+    // 5 Generate your JWT
+    const tokenJWT = generateTokens(user._id);
+
+    const {accessToken, refreshToken} = generateTokens(user._id);
+    await storeRefreshToken(user._id, refreshToken);
+    setCookies(res, accessToken, refreshToken);
+
+    let coupon = await Coupon.findOne({
+        userId : user._id
+    })
+
+    if (!coupon) {
+        const newCoupon = new Coupon({
+            code : "GIFT" + Math.random().toString(36).substring(3,8).toUpperCase(),
+            discountPercentage : 40,
+            userId : user._id,
+            isActive : true,
+            expirationDate : Date.now() + 30 * 24 * 60 * 60 * 1000
+        });
+
+        await newCoupon.save();
+    }
+    // 6 Send response
+    res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role : user.role
+    });
+
+  } catch (error) {
+    console.log("Google Auth Error:", error);
+    res.status(500).json({
+      message: "Google authentication failed"
+    });
+  }
+};

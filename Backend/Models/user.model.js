@@ -13,10 +13,20 @@ const userSchema = new mongoose.Schema({
         lowercase : true,  // this means that email will be stored in lowercase in database even if the user writes it in uppercase, this is useful because email is case insensitive and it will help in avoiding duplicate emails in database.
         trim : true // this means that any whitespace before or after the email will be removed, this is useful because sometimes users might accidentally add whitespace before or after the email and it will help in avoiding duplicate emails in database.
     },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
+    image: {
+        type: String
+    },
     password : {
         type : String,
-        required : [true, "Password is required"],
-        minlength : [6, 'Password should be at least 6 characters long']
+        minlength : [6, 'Password should be at least 6 characters long'],
+        required : function() {
+            return !this.googleId;
+        }
     },
     // now they will be having some cart items 
     cartItems : [
