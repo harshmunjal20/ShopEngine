@@ -35,7 +35,7 @@ app.use('/api/analytics', analyticsRoutes);
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirName, "/frontend/dist"))); // dist => distribution folder => It contains the final optimised version of your app that is ready to be deployed, dist is the folder that users actually download in their browser
 
-    app.get('*', (req, res) => {
+    app.use((req, res) => {
         res.sendFile(path.resolve(__dirName, "frontend", "dist", "index.html"));
     }); // for any request that that doesn't match an API Route, send index.html
 }
