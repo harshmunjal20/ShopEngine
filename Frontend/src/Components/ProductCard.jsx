@@ -20,8 +20,8 @@ const ProductCard = ({product}) => {
    return (
       <div className='flex w-full relative flex-col overflow-hidden rounded-lg border border-gray-700 shadow-lg'>
 
-         <div className='relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl'>
-            <img className='object-cover w-full' src={product.image} alt='product-image'/>
+         <div className='relative mx-3 mt-3 flex aspect-[4/5] overflow-hidden rounded-xl transition-transform duration-300 ease-in-out hover:scale-110'>
+            <img className='object-cover w-full h-full ' src={product.image} alt='product-image'/>
             <div className='absolute inset-0 bg-black bg-opacity-20'/>
          </div>
 

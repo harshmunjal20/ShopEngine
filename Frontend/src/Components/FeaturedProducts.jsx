@@ -49,7 +49,7 @@ const FeaturedProducts = ({featuredProducts}) => {
 											<img
 												src={product.image}
 												alt={product.name}
-												className='w-full h-48 object-cover transition-transform duration-300 ease-in-out hover:scale-110'
+												className='w-full aspect-[4/5] object-cover transition-transform duration-300 ease-in-out hover:scale-110'
 											/>
 										</div>
 										<div className='p-4'>
