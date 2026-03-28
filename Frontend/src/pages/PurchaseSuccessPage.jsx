@@ -6,7 +6,6 @@ import {useCartStore} from '../stores/useCartStore.js';
 import LoadingSpinner from '../Components/LoadingSpinner';
 import Confetti from 'react-confetti';
 
-const API = import.meta.env.VITE_API_URL;
 
 const PurchaseSuccessPage = () => {
    const [isProcessing, setIsProcessing] = useState(true);
@@ -17,7 +16,7 @@ const PurchaseSuccessPage = () => {
    useEffect(() => {
       const handleCheckoutSuccess = async (sessionId) => {
          try {
-            await axios.post(`${API}/api/payments/checkout-success`, {sessionId});
+            await axios.post(`api/payments/checkout-success`, {sessionId});
             clearCart();
          }
          catch (error) {
@@ -61,7 +60,7 @@ const PurchaseSuccessPage = () => {
             numberOfPieces={700}
             recycle={false}
          /> 
-         
+
          <div className='max-w-md w-full bg-gray-800 rounded-lg shadow-xl overflow-hidden relative z-10'>
             <div className='p-6 sm:p-8'>
                <div className='flex justify-center'>

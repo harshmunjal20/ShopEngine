@@ -4,7 +4,6 @@ import {useCartStore} from '../stores/useCartStore.js';
 import {Move, MoveRight} from 'lucide-react';
 import {loadStripe} from '@stripe/stripe-js';
 import axios from '../lib/axios.js';
-const API = import.meta.env.VITE_API_URL;
 
 // const stripePromise = loadStripe("pk_test_51TCVZh2UJcHAIzHJtM8rI8MeqW1j3WhUfnKQmaYd2PJNg7pjkiZRUb5tayPvfk8JpPOSf60HKLBwIl4bh4nvDdl200VdiXrXW0");
 
@@ -18,7 +17,7 @@ const OrderSummary = () => {
 
    const handlePayment = async () => {
       try {
-         const res = await axios.post(`${API}/api/payments/create-checkout-session`, 
+         const res = await axios.post(`api/payments/create-checkout-session`, 
             {products : cart, couponCode : coupon ? coupon.code : null}
          );
          const {url, totalAmount} = res.data; // this will have session id 

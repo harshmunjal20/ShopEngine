@@ -1,7 +1,6 @@
 import {create} from 'zustand';
 import axios from '../lib/axios.js';
 import {toast} from 'react-hot-toast';
-const API = import.meta.env.VITE_API_URL;
 
 // it will have states initially and then setters function
 export const useProductStore = create((set, get) => ({
@@ -13,7 +12,7 @@ export const useProductStore = create((set, get) => ({
       set({loading : true});
 
       try {
-         const res = await axios.post(`${API}/api/products`, productData);
+         const res = await axios.post(`api/products`, productData);
 
          // now we want to add product to the previous state of products array , ie update the setter
          set((prevState) => ({
@@ -33,7 +32,7 @@ export const useProductStore = create((set, get) => ({
    fetchAllProducts : async() => {
       set({loading : true});
       try {
-         const response = await axios.get(`${API}/api/products`);
+         const response = await axios.get(`api/products`);
          set({products : response.data.products, loading : false}); // as in backend we are returning {products}
       }
       catch (error) {
@@ -45,7 +44,7 @@ export const useProductStore = create((set, get) => ({
    fetchFeaturedProducts : async () => {
       set({loading : true});
       try {
-         const response = await axios.get(`${API}/api/products/featured`);
+         const response = await axios.get(`api/products/featured`);
          set({products : response.data.products, loading : false});
       }
       catch (error) {
@@ -58,7 +57,7 @@ export const useProductStore = create((set, get) => ({
       set({loading : true});
 
       try {
-         const response = await axios.get(`${API}/api/products/category/${category}`);
+         const response = await axios.get(`api/products/category/${category}`);
          set({products : response.data.products, loading : false});
       }
       catch (error) {
@@ -70,7 +69,7 @@ export const useProductStore = create((set, get) => ({
    deleteProduct : async (productId) => {
       set({loading : true});
       try {
-         await axios.delete(`${API}/api/products/${productId}`);
+         await axios.delete(`api/products/${productId}`);
          set((prevState) => ({
             products : prevState.products.filter((product) => product._id !== productId),
             loading : false
@@ -85,7 +84,7 @@ export const useProductStore = create((set, get) => ({
       set({loading : true});
 
       try {
-         const response = await axios.patch(`${API}/api/products/${productId}`);
+         const response = await axios.patch(`api/products/${productId}`);
          // now we will be filter out this response from the previous  , this will update the isFeatured property of the product
          set((prevState) => ({
             products : prevState.products.map((product) => 

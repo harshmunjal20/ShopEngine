@@ -2,7 +2,6 @@ import ProductCard from './ProductCard.jsx';
 import axios from '../lib/axios.js';
 import {useState, useEffect} from 'react';
 import {toast} from 'react-hot-toast';
-const API = import.meta.env.VITE_API_URL;
 import LoadingSpinner from './LoadingSpinner.jsx';
 
 const PeopleAlsoBought = () => {
@@ -12,7 +11,7 @@ const PeopleAlsoBought = () => {
    useEffect(() => {
       const fetchRecommendations = async () => {
          try {
-            const res = await axios.get(`${API}/api/products/recommendations`);
+            const res = await axios.get(`api/products/recommendations`);
             setRecommendations(res.data);
          }
          catch (error) {

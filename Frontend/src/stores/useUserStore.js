@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
-const API = import.meta.env.VITE_API_URL;
 
 export const useUserStore = create((set, get) => ({
 	user: null,
@@ -17,7 +16,7 @@ export const useUserStore = create((set, get) => ({
 		}
 
 		try {
-			const res = await axios.post(`${API}/api/auth/signup`, { name, email, password });
+			const res = await axios.post(`api/auth/signup`, { name, email, password });
 			set({ user: res.data, loading: false });
 		} catch (error) {
 			set({ loading: false });
@@ -29,7 +28,7 @@ export const useUserStore = create((set, get) => ({
       set({loading : true});
 
       try {
-         const res = await axios.post(`${API}/api/auth/login`, {email, password});
+         const res = await axios.post(`api/auth/login`, {email, password});
          set({user : res.data, loading : false});
       }
       catch (error) {
@@ -42,7 +41,7 @@ export const useUserStore = create((set, get) => ({
       set({checkingAuth : true});
 
       try {
-         const response = await axios.get(`${API}/api/auth/profile`); // it will return the user profile to us
+         const response = await axios.get(`api/auth/profile`); // it will return the user profile to us
          set({user : response.data, checkingAuth : false});
       }
       catch (error) {
@@ -57,7 +56,7 @@ export const useUserStore = create((set, get) => ({
 
       set({checkingAuth : true});
       try {
-         const response = await axios.post(`${API}/api/auth/refresh-token`);
+         const response = await axios.post(`api/auth/refresh-token`);
          set({checkingAuth : false});
          return response.data;
       }
@@ -70,7 +69,7 @@ export const useUserStore = create((set, get) => ({
    logout : async() => {
       try {
          set({user : null});
-         await axios.post(`${API}/api/auth/logout`);
+         await axios.post(`api/auth/logout`);
       }
       catch (error) {
          toast.error(error.response?.data?.message || "An error occured during logout");

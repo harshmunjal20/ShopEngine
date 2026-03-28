@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Users , Package, ShoppingCart, DollarSign } from 'lucide-react';
 import { motion } from 'framer-motion';
 import axios from '../lib/axios.js';
-const API = import.meta.env.VITE_API_URL;
 import LoadingSpinner from './LoadingSpinner.jsx';
 import AnalyticsCard from './AnalyticsCard.jsx';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
@@ -22,7 +21,7 @@ const AnalyticsTab = () => {
    useEffect(() => {
       const fetchAnalyticsData = async () => {
          try {
-            const response = await axios.get(`${API}/api/analytics`);
+            const response = await axios.get(`api/analytics`);
             setAnalyticsData(response.data.analyticsData);
             setDailySalesData(response.data.dailySalesData);
          }

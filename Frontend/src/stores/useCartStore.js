@@ -1,7 +1,6 @@
 import {create} from 'zustand';
 import axios from '../lib/axios.js';
 import {toast} from 'react-hot-toast';
-const API = import.meta.env.VITE_API_URL;
 
 export const useCartStore = create((set, get) => ({
    cart : [],
@@ -12,7 +11,7 @@ export const useCartStore = create((set, get) => ({
 
    getMyCoupon : async() => {
       try {
-         const response = await axios.get(`${API}/api/coupons`);
+         const response = await axios.get(`/api/coupons`);
          set({coupon : response.data})
       }
       catch (error) {
@@ -22,7 +21,7 @@ export const useCartStore = create((set, get) => ({
 
    applyCoupon : async (code) => {
       try {
-         const response = await axios.post(`${API}/api/coupons/validate`, {code});
+         const response = await axios.post(`api/coupons/validate`, {code});
          set({coupon : response.data, isCouponApplied : true});
          get().calculateTotals();
          toast.success("Coupon applied successfully");
@@ -40,7 +39,7 @@ export const useCartStore = create((set, get) => ({
 
    getCartItems : async () => {
       try {
-         const res = await axios.get(`${API}/api/cart`); 
+         const res = await axios.get(`api/cart`); 
          set({cart : res.data});
          get().calculateTotals();
       }
@@ -51,7 +50,7 @@ export const useCartStore = create((set, get) => ({
    }, // it's gonna give us all the different items in the cart by calling at the api endpoint
 
    removeFromCart : async (productId) => {
-      await axios.delete(`${API}/api/cart`, {data : {productId}});
+      await axios.delete(`api/cart`, {data : {productId}});
       set(prevState => ({cart : prevState.cart.filter((item) => item._id !== productId)}));
       get().calculateTotals();
    },
@@ -66,7 +65,7 @@ export const useCartStore = create((set, get) => ({
          return;
       }
 
-      await axios.put(`${API}/api/cart/${productId}`, {quantity} );
+      await axios.put(`api/cart/${productId}`, {quantity} );
       set((prevState) => ({
          cart : prevState.cart.map((item) => (item._id === productId) ? {...item, quantity} : item)
       }));
@@ -76,7 +75,7 @@ export const useCartStore = create((set, get) => ({
 
    addToCart : async (product) => {
       try {
-         await axios.post(`${API}/api/cart`, {productId : product._id});
+         await axios.post(`api/cart`, {productId : product._id});
          toast.success('Product added to cart');
 
          set((prevState) => {
