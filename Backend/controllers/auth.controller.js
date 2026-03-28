@@ -98,7 +98,7 @@ export const login = async (req, res) => {
             })
         }
         else {
-            res.status(401).json({message : "Invalid email or password"});
+            res.status(400).json({message : "Invalid email or password"}); // we changed it to 400 because it was conflicting with the interceptors
         }
     }
     catch (error) {
