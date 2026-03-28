@@ -60,10 +60,10 @@ const GiftCouponCard = () => {
             className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-white
             ${success ? "bg-green-500 shadow-lg shadow-green-500/50" : "bg-emerald-600 hover:bg-emerald-700"}`}
             >
-               {success ? "Coupon Applied 🎉" : "Apply Code"}
+               {success ? "Coupon Applying 🎉" : "Apply Code"}
             </motion.button>
          </div>
-         
+
          {isCouponApplied && coupon && (
             <div className='mt-4'>
                <h3 className='text-lg font-medium text-gray-300'>
