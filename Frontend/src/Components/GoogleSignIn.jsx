@@ -1,6 +1,6 @@
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "../lib/axios.js";
-import { useUserStore } from "../stores/useUserStore";
+import { useUserStore } from "../stores/useUserStore.js";
 import { useNavigate } from "react-router-dom";
 
 const GoogleSignIn = () => {
@@ -13,7 +13,7 @@ const GoogleSignIn = () => {
 
       // send to backend
       const res = await axios.post("/api/auth/google", {
-        token,
+        token
       });
 
       // store user

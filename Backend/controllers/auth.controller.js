@@ -206,7 +206,6 @@ export const googleAuthController = async (req, res) => {
     }
 
     // 5 Generate your JWT
-    const tokenJWT = generateTokens(user._id);
 
     const {accessToken, refreshToken} = generateTokens(user._id);
     await storeRefreshToken(user._id, refreshToken);
