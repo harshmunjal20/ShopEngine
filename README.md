@@ -34,11 +34,20 @@ A modern full-stack e-commerce platform built to provide a seamless online shopp
 ## 📸 Screenshots
 
 * Home Page
+  <img width="1890" height="887" alt="Screenshot 2026-06-09 194722" src="https://github.com/user-attachments/assets/7a466156-5af8-4671-8cb2-5f2d1707e581" />
+
 * Product Listing Page
-* Product Details Page
+  <img width="1903" height="912" alt="Screenshot 2026-06-09 194742" src="https://github.com/user-attachments/assets/a2039c1c-b5d1-4127-a5a4-a3603e5276be" />
+
 * Cart Page
+  <img width="1887" height="886" alt="Screenshot 2026-06-09 194758" src="https://github.com/user-attachments/assets/d9e464ff-4c52-416f-b1e9-29a6a387183c" />
+
 * Checkout Page
+  <img width="1918" height="892" alt="Screenshot 2026-06-09 194859" src="https://github.com/user-attachments/assets/dee9ebaf-3d39-463f-a676-ef9f19f280e6" />
+
 * Admin Dashboard
+  <img width="1861" height="884" alt="Screenshot 2026-06-09 194930" src="https://github.com/user-attachments/assets/2c21a5cb-a674-4978-b934-d126e947062b" />
+
 
 ## 🏗️ Tech Stack
 
