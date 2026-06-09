@@ -2,6 +2,12 @@
 
 A modern full-stack e-commerce platform built to provide a seamless online shopping experience. ShopEngine includes product categorization, secure payments, coupon management, cart functionality, an admin dashboard, and a responsive user interface.
 
+## 🌐 Live Demo
+
+Experience ShopEngine live:
+
+🔗 **Website:** [Visit ShopEngine](https://shopengine-harsh.onrender.com/)
+
 ## Features
 
 ### 👥 User Features
